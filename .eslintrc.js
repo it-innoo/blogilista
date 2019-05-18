@@ -29,6 +29,7 @@ module.exports = {
             "error",
             "never"
         ],
+        "no-param-reassign": ["error", { "props": false }],
         "no-console": 0
     }
 };
