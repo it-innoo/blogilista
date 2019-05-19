@@ -29,6 +29,7 @@ module.exports = {
             "error",
             "never"
         ],
+        "no-underscore-dangle": ["error", { "allow": ["_id", "__v"] }],
         "no-param-reassign": ["error", { "props": false }],
         "no-console": 0
     }
