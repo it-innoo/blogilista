@@ -1,10 +1,9 @@
-/* eslint-disable no-underscore-dangle */
 const mongoose = require('mongoose')
+const config = require('../utils/config')
 
-const url = process.env.MONGODB_URI
-console.log('connecting to', url)
+console.log(`connecting to ${config.MONGODB_URI}`)
 
-mongoose.connect(url, {
+mongoose.connect(config.MONGODB_URI, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
