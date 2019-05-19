@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const middleware = require('./utils/middleware')
 const config = require('./utils/config')
 
 
@@ -37,28 +38,9 @@ app.post('/api/blogs', (request, response, next) => {
     .catch(error => next(error))
 })
 
-const unknownEndpoint = (req, res) => {
-  res.status(404).send({ error: 'unknown endpoint' })
-}
 
-app.use(unknownEndpoint)
-
-const errorHandler = (error, req, res, next) => {
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    return res
-      .status(400)
-      .send({ error: 'malformatted id' })
-  } if (error.name === 'ValidationError') {
-    return res
-      .status(400)
-      .json({ error: error.message })
-  }
-
-  return next(error)
-}
-
-app.use(errorHandler)
-
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 app.listen(config.PORT, () => {
   console.log(`Server running on port ${config.PORT}`)
