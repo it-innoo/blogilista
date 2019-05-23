@@ -93,6 +93,30 @@ test('identier is named id', async () => {
   expect(ids).toBeDefined()
 })
 
+test('a valid blog can be added', async () => {
+  const newBlog = {
+    title: 'Async/Await',
+    author: 'Me Luv',
+    url: 'url',
+    likes: 0,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  const title = response.body.map(r => r.title)
+
+  expect(response.body.length).toBe(initialBlogs.length + 1)
+  expect(title)
+    .toContain(
+      'Async/Await',
+    )
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
