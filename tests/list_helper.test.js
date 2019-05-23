@@ -70,7 +70,6 @@ test('dummy returns one', () => {
 })
 
 describe('total likes', () => {
-
   test('of empty list is zero', () => {
     const result = listHelper.totalLikes([])
     expect(result).toBe(0)
@@ -84,5 +83,22 @@ describe('total likes', () => {
   test('of a bigger list is calculated right', () => {
     const result = listHelper.totalLikes(listWithSeveralBlogs)
     expect(result).toBe(36)
+  })
+})
+
+describe('Favorite Blog', () => {
+  test('of empty list is zero', () => {
+    const result = listHelper.favoriteBlog()
+    expect(result).toEqual({})
+  })
+
+  test('when list has only one blog equals the blog', () => {
+    const expexted = {
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      likes: 5,
+    }
+    const result = listHelper.favoriteBlog(listWithOneBlog)
+    expect(result).toEqual(expexted)
   })
 })
