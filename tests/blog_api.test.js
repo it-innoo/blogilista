@@ -117,6 +117,29 @@ test('a valid blog can be added', async () => {
     )
 })
 
+test('a valid blog added defaults to zero likes', async () => {
+  const newBlog = {
+    title: 'Async/Await',
+    author: 'Me Luv',
+    url: 'url',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  const likes = response.body
+    .filter(r => r.title === 'Async/Await')
+    .map(r => r.likes)
+
+  expect(response.body.length).toBe(initialBlogs.length + 1)
+  expect(likes[0])
+    .toBe(0)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
