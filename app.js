@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const csp = require('helmet-csp')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const blogsRouter = require('./controllers/blogs')
@@ -25,8 +26,14 @@ mongoose.connect(config.MONGODB_URI, {
     logger.error('error connecting to MongoDB:', error.message)
   })
 
-app.use(cors())
 app.use(bodyParser.json())
+app.use(cors())
+app.use(csp({
+  directives: {
+    defaultSrc: ['\'self\''],
+    imgSrc: ['\'self\'', '/favicon.ico'],
+  },
+}))
 
 morgan
   .token('body', req => JSON.stringify(req.body))
