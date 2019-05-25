@@ -5,11 +5,16 @@ const totalLikes = blogs => blogs
   .reduce((total, amount) => total + amount, 0)
 
 const favoriteBlog = (blogs) => {
-  const [{
-    _id, __v, url, ...favorites
-  }] = blogs || [{ _id: '0', __v: '', url: '' }]
+  if (blogs === undefined || blogs === null || blogs.length === 0) {
+    return []
+  }
 
-  return favorites
+  const max = blogs
+    .reduce((prev, current) => ((prev.likes > current.likes)
+      ? prev : current))
+
+  const favorite = (({ title, author, likes }) => ({ title, author, likes }))(max)
+  return favorite
 }
 
 module.exports = {
