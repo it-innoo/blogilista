@@ -89,10 +89,10 @@ describe('total likes', () => {
 describe('Favorite Blog', () => {
   test('of empty list is zero', () => {
     const result = listHelper.favoriteBlog()
-    expect(result).toEqual([])
+    expect(result).toEqual({})
 
-    expect(listHelper.favoriteBlog([])).toEqual([])
-    expect(listHelper.favoriteBlog(null)).toEqual([])
+    expect(listHelper.favoriteBlog([])).toEqual({})
+    expect(listHelper.favoriteBlog(null)).toEqual({})
   })
 
   test('when list has only one blog equals the blog', () => {
@@ -116,5 +116,18 @@ describe('Favorite Blog', () => {
     const result = listHelper
       .favoriteBlog(listWithSeveralBlogs)
     expect(result).toEqual(expexted)
+  })
+})
+
+describe('Most eager blogger', () => {
+  test('has blogs', () => {
+    const expected = {
+      author: 'Robert C. Martin',
+      blogs: 3,
+    }
+
+    const result = listHelper
+      .mostBlogs(listWithSeveralBlogs)
+    expect(result).toEqual(expected)
   })
 })
