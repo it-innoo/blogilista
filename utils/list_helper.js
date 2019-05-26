@@ -24,19 +24,14 @@ const mostBlogs = (blogs) => {
 
   const authors = blogs
     .map(b => b.author)
-  const counts = authors.reduce((obj, name) => {
-    obj[name] = obj[name] ? (obj[name] + 1) : 1
-    return obj
-  }, {})
+    .reduce((obj, name) => {
+      obj[name] = obj[name] ? (obj[name] + 1) : 1
+      return obj
+    }, {})
 
-  const most = Object.entries(counts)
-
-  let max = most[0]
-  most.forEach((item) => {
-    if (item[1] > max[1]) {
-      max = item
-    }
-  })
+  const max = Object.entries(authors)
+    .reduce((prev, current) => ((prev[1] > current[1])
+      ? prev : current))
 
   return {
     author: max[0],
@@ -44,9 +39,12 @@ const mostBlogs = (blogs) => {
   }
 }
 
+const mostLikes = blogs => blogs
+
 module.exports = {
   dummy,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
   totalLikes,
 }

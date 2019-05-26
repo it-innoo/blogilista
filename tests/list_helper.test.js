@@ -131,3 +131,12 @@ describe('Most eager blogger', () => {
     expect(result).toEqual(expected)
   })
 })
+
+describe('Most liked blogger', () => {
+  test('has likes', () => {
+    const expected = {
+      author: 'Edsger W. Dijkstra',
+      likes: 17,
+    }
+  })
+})
