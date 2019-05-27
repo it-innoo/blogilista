@@ -176,12 +176,24 @@ describe('when there is initially one user at db', () => {
     await user.save()
   })
 
+  test('users are returned as json', async () => {
+    const usersAtStart = await helper.usersInDb()
+
+    await api
+      .get('/api/users')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const usernames = usersAtStart.map(u => u.username)
+    expect(usernames).toContain('root')
+  })
+
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
 
     const newUser = {
-      username: 'mluukkai',
-      name: 'Matti Luukkainen',
+      username: 'root',
+      name: 'Superuser',
       password: 'salainen',
     }
 
