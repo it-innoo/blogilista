@@ -5,12 +5,15 @@ cache:
   directories:
   - node_modules
 services:
-  - mongodb
+- mongodb
 before_script:
-  - mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
+- mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 before_install:
 - npm update
 install:
 - npm install
 script:
 - npm test
+env:
+  global:
+    secure: cTMS8rtT11yzMvQK41e0z42ZtgUDzGJiMrPqy4iJfZBcpZhdsS8I5DKeJQGXUPM6HAYAfUEL1L+74DBSD3YCbMGjFB4luyccS9JI2dtqok+EIGCxpGR6ACGqLNu3moMQYHGsdvY0Xbj05jr+ljwLX/RDwrP18gU68DAoYYw9VysaZXyRKpDwtynEFBoBZbdJlpLVXSb2LvqZMzR/ln70bP/B3iZIHl8Sd56pP75/sn+D6oBsqRlof1SHTnnbxxUpeEGW0H6wSQESDf5DVR1a4HgmWfjEo08jYhgU0NT28JesQqcmlDRs3llJ9eRvCtgKxAk04bymJbQ0qMg6JdZN9ImpgHWZ/LsNI8UnpQKP1cQmIZRByihcREzzxLqAGLvmmuXj6avajLfZB1Z4pGutUBjtIp6+m62FFDYqQaHRGylvnbbFNWUvDD+YiamRiNgcVvPLjmLnhCI5XqGlpBE+bbN5DEQPhJuFYP0MHzVJHIWlS3271MtcdYXyghARFW1E6vCgbB0n/Pz4uTfZXXwMV3P5n3+ZNzrKIdWOIJ2AXMLUEvW+dwrvyTeWu8DNrAgT88xqq5QhBS57iMJpfJ/Wpi4SyBdT4TLaSzkowgGPBGJ9WtkoHIcLUUrdNk6W2A5c/jTQj77rxdyqueAAl2wXUOsf7/W0FzBB+zlTLTGKCSY=
