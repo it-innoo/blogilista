@@ -1,3 +1,5 @@
+const Blog = require('../models/blog')
+
 const dummy = () => 1
 
 const totalLikes = blogs => blogs
@@ -39,7 +41,34 @@ const mostBlogs = (blogs) => {
   }
 }
 
-const mostLikes = blogs => blogs
+const mostLikes = (blogs) => {
+  if (blogs === undefined || blogs === null || blogs.length === 0) {
+    return {}
+  }
+
+  const authors = blogs
+    .map(b => ({
+      author: b.author,
+      likes: b.likes,
+    }))
+
+  const likes = authors
+    .reduce((obj, name) => {
+      obj[name.author] = obj[name.author]
+        ? (obj[name.author] + name.likes)
+        : name.likes
+      return obj
+    }, {})
+
+  const max = Object.entries(likes)
+    .reduce((prev, current) => ((prev[1] > current[1])
+      ? prev : current))
+
+  return {
+    author: max[0],
+    likes: max[1],
+  }
+}
 
 module.exports = {
   dummy,
