@@ -5,6 +5,7 @@ const csp = require('helmet-csp')
 const mongoose = require('mongoose')
 const morgan = require('morgan')
 const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
 const middleware = require('./utils/middleware')
 const config = require('./utils/config')
 const logger = require('./utils/logger')
@@ -42,6 +43,7 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :b
 
 
 app.use('/api/blogs', blogsRouter)
+app.use('/api/users', usersRouter)
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
