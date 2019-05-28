@@ -1,15 +1,11 @@
 language: node_js
 node_js:
 - '10'
-env:
-  TEST_MONGODB_URI='mongodb+srv://jahlgren:guOBe7L67qtghXkn@cluster0-kagf9.mongodb.net/phonebook-test?retryWrites=true'
 cache:
   directories:
   - node_modules
 services:
 - mongodb
-before_script:
-- mongo mydb_test --eval 'db.createUser({user:"travis",pwd:"test",roles:["readWrite"]});'
 before_install:
 - npm update
 install:
