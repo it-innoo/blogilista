@@ -3,28 +3,19 @@ const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 blogsRouter.get('/', async (_request, response) => {
   const blogs = await Blog
     .find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs.map(blog => blog.toJSON()))
 })
 
+// eslint-disable-next-line consistent-return
 blogsRouter.post('/', async (request, response, next) => {
-  const { body } = request
-  const token = getTokenFrom(request)
+  const { body, token } = request
 
   try {
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-
-    if (!token || !decodedToken.id) {
+    const decodedToken = await jwt.verify(token, process.env.SECRET)
+    if (!decodedToken || !decodedToken.id) {
       return response
         .status(401)
         .json({ error: 'token missing or invalid' })
