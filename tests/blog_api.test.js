@@ -271,7 +271,3 @@ describe('when there is initially one user at db', () => {
 afterAll(() => {
   mongoose.connection.close()
 })
-async function newFunction(user) {
-  return await user.save();
-}
-
