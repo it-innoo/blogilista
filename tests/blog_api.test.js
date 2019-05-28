@@ -11,6 +11,7 @@ const api = supertest(app)
 
 describe('tietokannassa on alunperin muutama blogi', () => {
   let userId
+
   beforeEach(async () => {
     await Blog.deleteMany({})
 
