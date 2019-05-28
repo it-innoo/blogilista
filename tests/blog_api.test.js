@@ -10,8 +10,14 @@ const User = require('../models/user')
 const api = supertest(app)
 
 describe('tietokannassa on alunperin muutama blogi', () => {
+  let userId
   beforeEach(async () => {
     await Blog.deleteMany({})
+
+    await User.deleteMany({})
+    const user = new User({ username: 'root', password: 'sekret' })
+    const savedUser = await user.save()
+    userId = savedUser._id
 
     const blogObjects = helper.initialBlogs
       .map(blog => new Blog(blog))
@@ -41,11 +47,14 @@ describe('tietokannassa on alunperin muutama blogi', () => {
 
   describe('addition of a new blog', () => {
     test('succeeds with valid data', async () => {
+      const user = await User.findById(userId)
+
       const newBlog = {
         title: 'Async/Await',
         author: 'Me Luv',
         url: 'url',
         likes: 0,
+        userId: user._id,
       }
 
       await api
@@ -67,10 +76,13 @@ describe('tietokannassa on alunperin muutama blogi', () => {
     })
 
     test('likes defaults to zero', async () => {
+      const user = await User.findById(userId)
+
       const newBlog = {
         title: 'Async/Await',
         author: 'Me Luv',
         url: 'url',
+        userId: user._id,
       }
 
       await api
@@ -92,9 +104,12 @@ describe('tietokannassa on alunperin muutama blogi', () => {
     })
 
     test('fails with status code 400 if title invalid', async () => {
+      const user = await User.findById(userId)
+
       const newBlog = {
         author: 'Me Luv',
         url: 'url',
+        userId: user._id,
       }
 
       await api
@@ -108,9 +123,12 @@ describe('tietokannassa on alunperin muutama blogi', () => {
     })
 
     test('fails with status code 400 if url invalid', async () => {
+      const user = await User.findById(userId)
+
       const newBlog = {
         title: 'Async/Await',
         author: 'Me Luv',
+        userId: user._id,
       }
 
       await api
@@ -253,3 +271,7 @@ describe('when there is initially one user at db', () => {
 afterAll(() => {
   mongoose.connection.close()
 })
+async function newFunction(user) {
+  return await user.save();
+}
+
