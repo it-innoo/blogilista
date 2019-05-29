@@ -148,6 +148,7 @@ describe('tietokannassa on alunperin muutama blogi', () => {
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', `Bearer ${token}`)
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
@@ -161,7 +162,24 @@ describe('tietokannassa on alunperin muutama blogi', () => {
     test('fails with status code 400 if id is invalid', async () => {
       await api
         .delete('/api/blogs/1')
+        .set('Authorization', `Bearer ${token}`)
         .expect(400)
+    })
+
+    test('fails with status code 401 if invalid token', async () => {
+      const blogsAtStart = await helper.blogsInDb()
+      const blogToDelete = blogsAtStart[0]
+
+      await api
+        .delete(`/api/blogs/${blogToDelete.id}`)
+        .expect(401)
+
+      const blogsAtEnd = await helper.blogsInDb()
+      expect(blogsAtEnd.length)
+        .toBe(helper.initialBlogs.length)
+
+      const title = blogsAtEnd.map(r => r.title)
+      expect(title).toContain(blogToDelete.title)
     })
   })
 
