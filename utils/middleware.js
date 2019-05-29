@@ -24,13 +24,29 @@ const errorHandler = (error, _req, res, next) => {
     return res
       .status(400)
       .json({ error: error.message })
+  } if (error.name === 'JsonWebTokenError') {
+    return res
+      .status(401)
+      .json({
+        error: 'invalid token',
+      })
   }
 
   return next(error)
+}
+
+const tokenExtractor = (request, _response, next) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    request.token = authorization.substring(7)
+  }
+
+  next()
 }
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
 }
