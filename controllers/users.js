@@ -8,7 +8,6 @@ usersRouter.get('/', async (request, response) => {
   response.json(users.map(u => u.toJSON()))
 })
 
-// eslint-disable-next-line consistent-return
 usersRouter.post('/', async (request, response, next) => {
   try {
     const { body } = request
@@ -21,6 +20,7 @@ usersRouter.post('/', async (request, response, next) => {
         .json(
           { error: 'password is required and must be at least 3 chars' },
         )
+        .end()
     }
 
     const saltRounds = 10
@@ -34,9 +34,9 @@ usersRouter.post('/', async (request, response, next) => {
 
     const savedUser = await user.save()
 
-    response.json(savedUser)
+    return response.json(savedUser)
   } catch (error) {
-    next(error)
+    return next(error)
   }
 })
 
